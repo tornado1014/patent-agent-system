@@ -8,6 +8,13 @@ from patent_agent.agents.spec_writing import (
     QualityCheckerAgent,
     SpecWriterAgent,
 )
+from patent_agent.agents.oa_response import (
+    AmendmentDrafterAgent,
+    DocParserAgent,
+    RebuttalWriterAgent,
+    RejectionAnalyzerAgent,
+    ReportGeneratorAgent,
+)
 
 __all__ = [
     # Spec Writing Agents
@@ -17,4 +24,10 @@ __all__ = [
     "SpecWriterAgent",
     "DrawingGeneratorAgent",
     "QualityCheckerAgent",
+    # OA Response Agents
+    "DocParserAgent",
+    "RejectionAnalyzerAgent",
+    "RebuttalWriterAgent",
+    "AmendmentDrafterAgent",
+    "ReportGeneratorAgent",
 ]

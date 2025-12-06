@@ -72,6 +72,11 @@ class DocumentParserSettings(BaseSettings):
 class VectorStoreSettings(BaseSettings):
     """Vector store settings."""
 
+    model_config = SettingsConfigDict(
+        populate_by_name=True,
+        extra="ignore",
+    )
+
     provider: Literal["chroma", "pinecone"] = "chroma"
     persist_directory: Path = Field(
         default=Path("./data/chroma"), alias="CHROMA_PERSIST_DIRECTORY"
