@@ -10,12 +10,12 @@ packages = [{include = "patent_agent", from = "src"}]
 python = "^3.11"
 
 # LangChain Ecosystem
-langgraph = "^0.2"
+langgraph = "^1.0"
 langchain = "^0.3"
 langchain-core = "^0.3"
 langchain-community = "^0.3"
 langchain-anthropic = "^0.3"
-langchain-openai = "^0.2"
+langchain-openai = "^0.3"
 
 # Configuration & Validation
 pydantic = "^2.0"
