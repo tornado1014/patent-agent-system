@@ -15,6 +15,13 @@ from patent_agent.agents.oa_response import (
     RejectionAnalyzerAgent,
     ReportGeneratorAgent,
 )
+from patent_agent.agents.prior_art import (
+    ClaimComparerAgent,
+    MultiDBSearcherAgent,
+    NoveltyAssessorAgent,
+    QueryBuilderAgent,
+    RelevanceAnalyzerAgent,
+)
 
 __all__ = [
     # Spec Writing Agents
@@ -30,4 +37,10 @@ __all__ = [
     "RebuttalWriterAgent",
     "AmendmentDrafterAgent",
     "ReportGeneratorAgent",
+    # Prior Art Search Agents
+    "QueryBuilderAgent",
+    "MultiDBSearcherAgent",
+    "RelevanceAnalyzerAgent",
+    "ClaimComparerAgent",
+    "NoveltyAssessorAgent",
 ]
