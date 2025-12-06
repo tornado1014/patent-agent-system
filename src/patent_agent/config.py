@@ -53,6 +53,13 @@ class USPTOSettings(BaseSettings):
     timeout: int = 30
 
 
+class GooglePatentsSettings(BaseSettings):
+    """Google Patents (via SerpAPI) settings."""
+
+    api_key: SecretStr = Field(default="", alias="SERPAPI_API_KEY")
+    timeout: int = 30
+
+
 class EmbeddingSettings(BaseSettings):
     """Embedding model settings."""
 
@@ -121,6 +128,7 @@ class Settings(BaseSettings):
     openai: OpenAISettings = Field(default_factory=OpenAISettings)
     kipris: KIPRISSettings = Field(default_factory=KIPRISSettings)
     uspto: USPTOSettings = Field(default_factory=USPTOSettings)
+    google_patents: GooglePatentsSettings = Field(default_factory=GooglePatentsSettings)
     embedding: EmbeddingSettings = Field(default_factory=EmbeddingSettings)
     document_parser: DocumentParserSettings = Field(default_factory=DocumentParserSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
@@ -144,6 +152,12 @@ class Settings(BaseSettings):
     def anthropic_api_key(self) -> str | None:
         """Get Anthropic API key."""
         key = self.anthropic.api_key.get_secret_value()
+        return key if key else None
+
+    @property
+    def serpapi_api_key(self) -> str | None:
+        """Get SerpAPI (Google Patents) API key."""
+        key = self.google_patents.api_key.get_secret_value()
         return key if key else None
 
     @classmethod

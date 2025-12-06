@@ -22,6 +22,21 @@ from patent_agent.agents.prior_art import (
     QueryBuilderAgent,
     RelevanceAnalyzerAgent,
 )
+from patent_agent.agents.translation import (
+    BaseTranslationAgent,
+    ClaimTranslationRules,
+    DocumentIntakeAgent,
+    GlossaryBuilderAgent,
+    MistranslationPrevention,
+    OutputGeneratorAgent,
+    PunctuationRules,
+    QualityVerifierAgent,
+    SectionTranslatorAgent,
+    SpecTranslationRules,
+    StructureAnalyzerAgent,
+    StyleGuideRules,
+    TranslationGuidelines,
+)
 
 __all__ = [
     # Spec Writing Agents
@@ -43,4 +58,18 @@ __all__ = [
     "RelevanceAnalyzerAgent",
     "ClaimComparerAgent",
     "NoveltyAssessorAgent",
+    # Translation Agents (EN→KR)
+    "BaseTranslationAgent",
+    "StyleGuideRules",
+    "ClaimTranslationRules",
+    "SpecTranslationRules",
+    "PunctuationRules",
+    "MistranslationPrevention",
+    "TranslationGuidelines",
+    "DocumentIntakeAgent",
+    "StructureAnalyzerAgent",
+    "GlossaryBuilderAgent",
+    "SectionTranslatorAgent",
+    "QualityVerifierAgent",
+    "OutputGeneratorAgent",
 ]
