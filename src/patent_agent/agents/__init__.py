@@ -37,6 +37,18 @@ from patent_agent.agents.translation import (
     StyleGuideRules,
     TranslationGuidelines,
 )
+from patent_agent.agents.analysis import (
+    AnalysisGuidelines,
+    BaseAnalysisAgent,
+    ClaimAnalyzer,
+    ClaimMapperAgent,
+    CompetitorProfilerAgent,
+    DataCollectorAgent,
+    InfringementCheckerAgent,
+    PatentScorer,
+    ReportWriterAgent,
+    TrendAnalyzerAgent,
+)
 
 __all__ = [
     # Spec Writing Agents
@@ -72,4 +84,15 @@ __all__ = [
     "SectionTranslatorAgent",
     "QualityVerifierAgent",
     "OutputGeneratorAgent",
+    # Analysis Agents
+    "BaseAnalysisAgent",
+    "AnalysisGuidelines",
+    "ClaimAnalyzer",
+    "PatentScorer",
+    "DataCollectorAgent",
+    "ClaimMapperAgent",
+    "TrendAnalyzerAgent",
+    "CompetitorProfilerAgent",
+    "InfringementCheckerAgent",
+    "ReportWriterAgent",
 ]

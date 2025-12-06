@@ -14,6 +14,7 @@ from patent_agent.graphs.spec_writing_graph import SpecWritingGraph, create_spec
 from patent_agent.graphs.oa_response_graph import OAResponseGraph, create_oa_response_graph
 from patent_agent.graphs.prior_art_graph import PriorArtSearchGraph, create_prior_art_search_graph
 from patent_agent.graphs.translation_graph import TranslationGraph, create_translation_graph
+from patent_agent.graphs.analysis_graph import PatentAnalysisGraph, create_analysis_graph
 
 
 __all__ = [
@@ -32,4 +33,6 @@ __all__ = [
     "create_prior_art_search_graph",
     "TranslationGraph",
     "create_translation_graph",
+    "PatentAnalysisGraph",
+    "create_analysis_graph",
 ]
