@@ -35,6 +35,27 @@ monitoring:
   provider: opik
   project_name: patent-agent-system
 
+# Embedding Settings
+embedding:
+  provider: openai  # korpatelectra, openai, huggingface
+  model: text-embedding-3-small
+  device: cpu
+
+# Document Parser Settings
+document_parser:
+  pdf_parser: pymupdf  # pymupdf, docling
+  max_file_size_mb: 50
+  extract_images: false
+
+# KIPRIS Settings
+kipris:
+  base_url: http://plus.kipris.or.kr/openapi/rest
+  timeout: 30
+
+# USPTO Settings
+uspto:
+  timeout: 30
+
 # Domain-specific Settings
 domains:
   spec_writing:

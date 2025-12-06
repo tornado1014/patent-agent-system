@@ -45,6 +45,30 @@ class KIPRISSettings(BaseSettings):
     timeout: int = 30
 
 
+class USPTOSettings(BaseSettings):
+    """USPTO (US Patent DB) settings."""
+
+    # USPTO APIs are generally public but may require API key for some endpoints
+    api_key: SecretStr = Field(default="", alias="USPTO_API_KEY")
+    timeout: int = 30
+
+
+class EmbeddingSettings(BaseSettings):
+    """Embedding model settings."""
+
+    provider: Literal["korpatelectra", "openai", "huggingface"] = "openai"
+    model: str = "text-embedding-3-small"  # For OpenAI
+    device: str = "cpu"  # For local models
+
+
+class DocumentParserSettings(BaseSettings):
+    """Document parser settings."""
+
+    pdf_parser: Literal["pymupdf", "docling"] = "pymupdf"
+    max_file_size_mb: int = 50
+    extract_images: bool = False
+
+
 class VectorStoreSettings(BaseSettings):
     """Vector store settings."""
 
@@ -91,9 +115,31 @@ class Settings(BaseSettings):
     anthropic: AnthropicSettings = Field(default_factory=AnthropicSettings)
     openai: OpenAISettings = Field(default_factory=OpenAISettings)
     kipris: KIPRISSettings = Field(default_factory=KIPRISSettings)
+    uspto: USPTOSettings = Field(default_factory=USPTOSettings)
+    embedding: EmbeddingSettings = Field(default_factory=EmbeddingSettings)
+    document_parser: DocumentParserSettings = Field(default_factory=DocumentParserSettings)
     vector_store: VectorStoreSettings = Field(default_factory=VectorStoreSettings)
     workflow: WorkflowSettings = Field(default_factory=WorkflowSettings)
     monitoring: MonitoringSettings = Field(default_factory=MonitoringSettings)
+
+    # Convenience properties for API keys
+    @property
+    def kipris_api_key(self) -> str | None:
+        """Get KIPRIS API key."""
+        key = self.kipris.api_key.get_secret_value()
+        return key if key else None
+
+    @property
+    def openai_api_key(self) -> str | None:
+        """Get OpenAI API key."""
+        key = self.openai.api_key.get_secret_value()
+        return key if key else None
+
+    @property
+    def anthropic_api_key(self) -> str | None:
+        """Get Anthropic API key."""
+        key = self.anthropic.api_key.get_secret_value()
+        return key if key else None
 
     @classmethod
     def from_yaml(cls, yaml_path: Path | str) -> "Settings":
