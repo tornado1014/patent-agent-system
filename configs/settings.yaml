@@ -1,0 +1,79 @@
+# Patent Agent System - Configuration
+# Environment variables take precedence over these values
+
+# Application Settings
+app_name: "Patent Agent System"
+environment: development
+log_level: INFO
+debug: false
+
+# LLM Settings
+llm:
+  provider: anthropic
+  model: claude-sonnet-4-20250514
+  temperature: 0.0
+  max_tokens: 4096
+
+# Vector Store Settings
+vector_store:
+  provider: chroma
+  persist_directory: ./data/chroma
+  collection_name: patent_documents
+
+# Workflow Settings
+workflow:
+  # Maximum Reflexion loop iterations
+  max_iterations: 3
+  # Enable human approval at checkpoints
+  enable_human_in_loop: true
+  # Minimum quality score to pass (0-100)
+  quality_threshold: 80
+
+# Monitoring Settings
+monitoring:
+  enabled: false
+  provider: opik
+  project_name: patent-agent-system
+
+# Domain-specific Settings
+domains:
+  spec_writing:
+    # 9-step workflow for specification writing
+    steps: ["E1", "E2", "E3", "E4", "E5", "E6", "E7", "E8", "E9"]
+    human_checkpoints: ["E4", "E6", "E9"]
+
+  oa_response:
+    # 5-phase workflow for OA response
+    phases: ["P1", "P2", "P3", "P4", "P5"]
+    # Minimum amendment options to generate
+    min_amendments: 2
+    # Zero hallucination mode
+    zero_hallucination: true
+
+  prior_art:
+    # Databases to search
+    databases: ["KIPRIS", "USPTO", "Google_Patents"]
+    # Relevance score threshold
+    relevance_threshold: 0.7
+    # Maximum results per database
+    max_results_per_db: 50
+
+  translation:
+    # Source and target languages
+    source_lang: en
+    target_lang: ko
+    # 6-phase translation pipeline
+    phases: ["P1", "P2", "P3", "P4", "P5", "P6"]
+    # 5C quality criteria weights
+    quality_weights:
+      correctness: 0.25
+      clarity: 0.20
+      conciseness: 0.15
+      consistency: 0.20
+      compliance: 0.20
+
+  analysis:
+    # Supported analysis types
+    types: ["portfolio", "trend", "competitor", "infringement", "invalidity"]
+    # Visualization output formats
+    visualization_formats: ["png", "svg", "html"]

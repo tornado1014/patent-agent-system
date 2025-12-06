@@ -1,0 +1,52 @@
+# Ruff configuration for patent-agent-system
+# https://docs.astral.sh/ruff/configuration/
+
+target-version = "py311"
+line-length = 100
+src = ["src", "tests"]
+
+[lint]
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # Pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "UP",     # pyupgrade
+    "ARG",    # flake8-unused-arguments
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking
+    "PTH",    # flake8-use-pathlib
+    "ERA",    # eradicate (commented-out code)
+    "PL",     # Pylint
+    "RUF",    # Ruff-specific rules
+]
+
+ignore = [
+    "E501",   # line too long (handled by formatter)
+    "B008",   # do not perform function calls in argument defaults
+    "PLR0913", # too many arguments
+    "PLR2004", # magic value comparison
+]
+
+[lint.per-file-ignores]
+"tests/**/*.py" = [
+    "ARG",    # unused arguments in tests (fixtures)
+    "PLR2004", # magic values in tests
+]
+"src/patent_agent/rules/*.py" = [
+    "E501",   # long strings for law definitions
+]
+
+[lint.isort]
+known-first-party = ["patent_agent"]
+force-single-line = false
+lines-after-imports = 2
+
+[format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"
+docstring-code-format = true
