@@ -19,6 +19,11 @@ from patent_agent.tools.embeddings import (
     PatentEmbeddings,
     EmbeddingResult,
 )
+from patent_agent.tools.vector_store import (
+    PatentVectorStore,
+    PatentDocument,
+    SearchResult,
+)
 
 __all__ = [
     # KIPRIS
@@ -36,4 +41,8 @@ __all__ = [
     # Embeddings
     "PatentEmbeddings",
     "EmbeddingResult",
+    # Vector Store
+    "PatentVectorStore",
+    "PatentDocument",
+    "SearchResult",
 ]

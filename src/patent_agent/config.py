@@ -28,7 +28,7 @@ class LLMSettings(BaseSettings):
 class AnthropicSettings(BaseSettings):
     """Anthropic API settings."""
 
-    api_key: SecretStr = Field(default=..., alias="ANTHROPIC_API_KEY")
+    api_key: SecretStr = Field(default="", alias="ANTHROPIC_API_KEY")
 
 
 class OpenAISettings(BaseSettings):

@@ -16,7 +16,10 @@ export default function RootLayout({
         <meta name="description" content="AI-powered Patent Workflow Automation" />
       </head>
       <body className="min-h-screen bg-gray-50">
-        <CopilotKit runtimeUrl="/api/copilotkit">
+        <CopilotKit
+          publicApiKey={process.env.NEXT_PUBLIC_COPILOTKIT_PUBLIC_API_KEY}
+          runtimeUrl="/api/copilotkit"
+        >
           {children}
         </CopilotKit>
       </body>
