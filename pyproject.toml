@@ -42,6 +42,16 @@ numpy = "^1.26"
 # Monitoring & Tracing
 # opik = "^1.0"
 
+# CopilotKit Integration (Phase 8)
+copilotkit = "^0.1.0"
+fastapi = "^0.115.0"
+uvicorn = "^0.32.0"
+
+# Utilities
+httpx = "^0.27"
+tenacity = "^9.0"
+structlog = "^24.0"
+
 [tool.poetry.extras]
 kipris = ["langchain-kipris"]
 uspto = ["patent-client"]
@@ -50,11 +60,6 @@ hwp = ["olefile"]
 docx = ["python-docx"]
 embeddings = ["transformers", "sentence-transformers", "torch"]
 all = ["langchain-kipris", "patent-client", "pymupdf", "olefile", "python-docx", "transformers", "sentence-transformers", "torch"]
-
-# Utilities
-httpx = "^0.27"
-tenacity = "^9.0"
-structlog = "^24.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0"

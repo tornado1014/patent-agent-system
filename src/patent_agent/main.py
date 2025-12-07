@@ -119,8 +119,15 @@ def main(args: Optional[list[str]] = None):
     elif args[0] == "version":
         print(f"Patent Agent System v{__version__}")
     elif args[0] == "server":
-        print("API server mode not yet implemented.")
-        print("Coming soon: FastAPI-based REST API")
+        # Start FastAPI server with CopilotKit integration
+        from patent_agent.api.server import main as run_server
+        print_banner()
+        print("\n🚀 Starting API server with CopilotKit integration...")
+        print("   Server: http://localhost:8000")
+        print("   CopilotKit: http://localhost:8000/copilotkit")
+        print("   Health: http://localhost:8000/health")
+        print("-" * 50)
+        run_server()
     else:
         print(f"Unknown command: {args[0]}")
         print("Available commands: run, server, version")

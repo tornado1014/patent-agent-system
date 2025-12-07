@@ -28,6 +28,10 @@ from patent_agent.agents.oa_response import (
 )
 from patent_agent.config import settings
 from patent_agent.graphs.base_graph import BasePatentGraph
+from patent_agent.state.copilotkit_state import (
+    AmendmentReviewEvent,
+    ReportApprovalEvent,
+)
 from patent_agent.state.oa_response import OAResponseState
 
 logger = structlog.get_logger(__name__)
@@ -451,6 +455,76 @@ class OAResponseGraph(BasePatentGraph[OAResponseState]):
             pass
 
         return END
+
+    def _build_interrupt_event(
+        self, state: OAResponseState, checkpoint: str
+    ) -> dict[str, Any]:
+        """Build workflow-specific interrupt event for human review.
+
+        Overrides base class to provide appropriate event data for each checkpoint:
+        - P4: AmendmentReviewEvent with amendment options and recommendation
+        - P5: ReportApprovalEvent with final report and selected amendment
+        """
+        if checkpoint == "P4":
+            # Amendment review checkpoint
+            amendments = state.get("amendment_options", [])
+            recommended = state.get("recommended_amendment")
+
+            # Convert amendment objects to dicts if needed
+            amendment_list = []
+            for a in amendments:
+                if isinstance(a, dict):
+                    amendment_list.append(a)
+                elif hasattr(a, "__dict__"):
+                    amendment_list.append(a.__dict__)
+                else:
+                    amendment_list.append({"data": str(a)})
+
+            # Get recommended amendment ID
+            recommended_id = ""
+            if recommended:
+                if isinstance(recommended, dict):
+                    recommended_id = recommended.get("amendment_id", "A")
+                elif hasattr(recommended, "amendment_id"):
+                    recommended_id = recommended.amendment_id
+                else:
+                    recommended_id = "A"
+            elif amendment_list:
+                recommended_id = amendment_list[0].get("amendment_id", "A")
+
+            event = AmendmentReviewEvent(
+                checkpoint=checkpoint,
+                amendments=amendment_list,
+                recommended=recommended_id,
+                message="보정안을 검토해주세요. LAW-3에 따라 최소 2개의 보정안 중 적합한 안을 선택하고, 명세서 지원 근거를 확인하세요.",
+            )
+            return event.to_dict()
+
+        elif checkpoint == "P5":
+            # Report approval checkpoint
+            final_report = state.get("final_report", {})
+            selected = state.get("selected_amendment") or state.get("recommended_amendment")
+
+            # Convert selected amendment to dict
+            selected_dict = None
+            if selected:
+                if isinstance(selected, dict):
+                    selected_dict = selected
+                elif hasattr(selected, "__dict__"):
+                    selected_dict = selected.__dict__
+                else:
+                    selected_dict = {"data": str(selected)}
+
+            event = ReportApprovalEvent(
+                checkpoint=checkpoint,
+                report=final_report if isinstance(final_report, dict) else {},
+                selected_amendment=selected_dict,
+                message="OA 대응 보고서를 검토해주세요. 거절이유 분석, 보정안, 의견서 초안이 정확한지 확인하고 최종 승인하세요.",
+            )
+            return event.to_dict()
+
+        # Fallback to base implementation for unknown checkpoints
+        return super()._build_interrupt_event(state, checkpoint)
 
 
 def create_oa_response_graph(

@@ -36,6 +36,11 @@ from patent_agent.state.spec_writing import (
     SpecWritingState,
     SpecWritingStep,
 )
+from patent_agent.state.copilotkit_state import (
+    ClaimReviewEvent,
+    FinalApprovalEvent,
+    SpecReviewEvent,
+)
 
 logger = structlog.get_logger(__name__)
 
@@ -507,6 +512,69 @@ class SpecWritingGraph(BasePatentGraph[SpecWritingState]):
                 feedback_parts.append(f"- (사용자) {hf['comments']}")
 
         return "\n".join(feedback_parts) if feedback_parts else "수정 필요"
+
+    def _build_interrupt_event(
+        self, state: SpecWritingState, checkpoint: str
+    ) -> dict[str, Any]:
+        """Build workflow-specific interrupt event for human review.
+
+        Overrides base class to provide appropriate event data for each checkpoint:
+        - E4: ClaimReviewEvent with draft claims
+        - E6: SpecReviewEvent with draft specification
+        - E9: FinalApprovalEvent with final claims, specification, and abstract
+        """
+        quality_score = state.get("quality_score", {
+            "overall": 0,
+            "completeness": 0,
+            "accuracy": 0,
+            "compliance": 0,
+            "comments": [],
+        })
+
+        if checkpoint == "E4":
+            # Claim review checkpoint
+            draft_claims = state.get("draft_claims", {})
+            claims_list = draft_claims.get("claims", []) if isinstance(draft_claims, dict) else []
+
+            event = ClaimReviewEvent(
+                checkpoint=checkpoint,
+                claims=claims_list,
+                quality_score=quality_score,
+                message="청구항 초안을 검토해주세요. 독립항과 종속항의 구조, 기술적 범위, 표현의 정확성을 확인하세요.",
+            )
+            return event.to_dict()
+
+        elif checkpoint == "E6":
+            # Specification review checkpoint
+            draft_spec = state.get("draft_specification", {})
+
+            event = SpecReviewEvent(
+                checkpoint=checkpoint,
+                specification=draft_spec if isinstance(draft_spec, dict) else {},
+                quality_score=quality_score,
+                message="명세서 본문을 검토해주세요. 발명의 상세한 설명, 실시예, 청구항과의 일관성을 확인하세요.",
+            )
+            return event.to_dict()
+
+        elif checkpoint == "E9":
+            # Final approval checkpoint
+            final_claims = state.get("final_claims") or state.get("draft_claims", {})
+            claims_list = final_claims.get("claims", []) if isinstance(final_claims, dict) else []
+            final_spec = state.get("final_specification") or state.get("draft_specification", {})
+            abstract = state.get("abstract", "")
+
+            event = FinalApprovalEvent(
+                checkpoint=checkpoint,
+                final_claims=claims_list,
+                final_specification=final_spec if isinstance(final_spec, dict) else {},
+                abstract=abstract,
+                quality_score=quality_score,
+                message="최종 명세서를 검토해주세요. 모든 구성요소가 완성되었는지 확인하고 출원 승인을 결정하세요.",
+            )
+            return event.to_dict()
+
+        # Fallback to base implementation for unknown checkpoints
+        return super()._build_interrupt_event(state, checkpoint)
 
 
 def create_spec_writing_graph(

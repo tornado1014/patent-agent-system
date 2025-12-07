@@ -170,12 +170,12 @@ poetry run pytest tests/unit/test_rules.py -v
 - [x] Phase 0: Claude Code Skills setup
 - [x] Phase 1: Core infrastructure
 - [ ] Phase 2: Data integration (KIPRIS, USPTO)
-- [ ] Phase 3: Spec writing workflow
-- [ ] Phase 4: OA response workflow
-- [ ] Phase 5: Prior art search
-- [ ] Phase 6: Translation workflow
-- [ ] Phase 7: Analysis workflow
-- [ ] Phase 8: UI/Monitoring
+- [x] Phase 3: Spec writing workflow
+- [x] Phase 4: OA response workflow
+- [x] Phase 5: Prior art search
+- [x] Phase 6: Translation workflow
+- [x] Phase 7: Analysis workflow
+- [x] Phase 8: UI/Monitoring (CopilotKit + Next.js)
 
 ## License
 
